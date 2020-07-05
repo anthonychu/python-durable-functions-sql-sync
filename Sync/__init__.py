@@ -9,5 +9,7 @@
 import logging
 
 
-def main(name: str) -> str:
-    return f"Hello {name}!"
+def main(prevrowversion: str) -> str:
+    if prevrowversion == None:
+        prevrowversion = "hello"
+    return prevrowversion

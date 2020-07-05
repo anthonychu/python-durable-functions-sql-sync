@@ -8,15 +8,23 @@
 
 import logging
 import json
+from datetime import timedelta 
 
 import azure.functions as func
 import azure.durable_functions as df
 
 
+polling_interval = 15
+
 def orchestrator_function(context: df.DurableOrchestrationContext):
-    result1 = yield context.call_activity('Hello', "Tokyo")
-    result2 = yield context.call_activity('Hello', "Seattle")
-    result3 = yield context.call_activity('Hello', "London")
-    return [result1, result2, result3]
+    # prev_rowversion = context.get_input()
+    # current_rowversion = yield context.call_activity('Sync', prev_rowversion)
+
+    # next_check = context.current_utc_datetime + timedelta(seconds=polling_interval)
+    # logging.warning(f'Next: {str(next_check)}')
+    # yield context.create_timer(next_check)
+    logging.warning(f'Continuing as new')
+    yield context.continue_as_new("")
+
 
 main = df.Orchestrator.create(orchestrator_function)
